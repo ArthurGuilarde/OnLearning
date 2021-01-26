@@ -1,0 +1,8 @@
+# Virtual Env
+env/
+
+# Python
+__pycache__/
+
+# Test Db
+db.sqlite3
