@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '-fxv*#&gm8ov7bbwn%snax4_bq1943efh=(5iad+(i=q#acb0q'
 REFRESH_SECRET_KEY = 'arthurwuc$*+9v#__^uh0tc06rdblzc2z9c+#ng8w+51sq(xv7!7zv%^arthur'
+MAKE_TEACHER_SECRET_KEY = 'Im_Teacher'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

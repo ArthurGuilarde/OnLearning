@@ -8,6 +8,7 @@ from rest_framework import exceptions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 
+from django.conf import settings
 from django_api.core.models import User
 from django_api.core.serializers import UserSerializer
 
@@ -26,7 +27,6 @@ def CreateUser(request):
     email=email,
   )
 
-  print(created)
   serialized = UserSerializer(my_user).data
 
   if created: 
@@ -37,7 +37,7 @@ def CreateUser(request):
     # Get permissions and add permission to user
     permission_codename = 'student_user'
     
-    if usertType == 'teacher':
+    if usertType == settings.MAKE_TEACHER_SECRET_KEY:
       permission_codename = 'teacher_user'
 
     permission = Permission.objects.get(codename=permission_codename)

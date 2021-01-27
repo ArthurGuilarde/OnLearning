@@ -8,6 +8,11 @@ class User(AbstractUser):
 
   email = models.EmailField(max_length=254, unique=True)
   
+  credit = models.IntegerField(default=0)
+
+  created_at = models.DateTimeField(("Criado em"), auto_now_add=True)
+  updated_at = models.DateTimeField(("Atualizado em"), auto_now=True)
+  
   class Meta:
     permissions = (
       ('teacher_user', 'Give user permission of Teacher.'),
