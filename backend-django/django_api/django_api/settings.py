@@ -45,7 +45,8 @@ INSTALLED_APPS = [
 
     # apps
     'django_api.core',
-    'django_api.users'
+    'django_api.users',
+    'django_api.classes',
 ]
 
 AUTH_USER_MODEL = 'core.User'
