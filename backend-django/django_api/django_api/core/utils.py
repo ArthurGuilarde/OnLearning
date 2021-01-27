@@ -1,5 +1,6 @@
 import datetime
 import jwt
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from .models import User
 
@@ -33,9 +34,16 @@ def GenerateRefreshToken(user):
   return refresh_token
 
 def CheckRefreshToken(token):
-  decoded = jwt.decode(token, settings.REFRESH_SECRET_KEY, algorithms='HS256')
+  payload = jwt.decode(token, settings.REFRESH_SECRET_KEY, algorithms='HS256')
   
-  user = User(id=decoded['user_id'])
+  User = get_user_model()
+
+  user = User.objects.filter(id=payload.get('user_id')).first()
+
+  if user is None:
+    raise exceptions.AuthenticationFailed('User not found')
+  if not user.is_active:
+    raise exceptions.AuthenticationFailed('User is inactive')
 
   acces_token = GenerateAccessToken(user)
   

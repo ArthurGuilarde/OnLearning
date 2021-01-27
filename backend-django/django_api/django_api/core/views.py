@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import exceptions
 from rest_framework.decorators import api_view, permission_classes
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from rest_framework.permissions import AllowAny
 
 from .models import User
@@ -34,29 +34,33 @@ def Login(request):
   access_token = GenerateAccessToken(user)
   refresh_token = GenerateRefreshToken(user)
 
+  response.set_cookie(key='refresh_token', value=refresh_token, httponly=True)
   response.data = {
     'access_token': access_token,
     'user': serialized_user,
-    'refresh_token': refresh_token
   }
 
   return response
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@csrf_protect
 def Refresh(request):
-  refresh = request.data.get('refresh')
-
-  if (refresh is  None):
-    raise exceptions.AuthenticationFailed('Refresh token required.')
-
-  response = Response()
+  '''
+  To obtain a new access_token this view expects 2 important things:
+      1. a cookie that contains a valid refresh_token
+      2. a header 'X-CSRFTOKEN' with a valid csrf token, client app can get it from cookies "csrftoken"
+  '''
+  refresh_token = request.COOKIES.get('refresh_token')
+ 
+  if refresh_token is None:
+      raise exceptions.AuthenticationFailed(
+          'Authentication credentials were not provided.')
   
-  new_acces_token = CheckRefreshToken(refresh)
+  refresh_token = refresh_token.replace("b'", '')
+  refresh_token = refresh_token.replace("'", '')
+  
+  access_token = CheckRefreshToken(refresh_token)
 
-  response.data = {
-    'acces_token': new_acces_token
-  }
-
-  return response
+  return Response({'access_token': access_token})
   
