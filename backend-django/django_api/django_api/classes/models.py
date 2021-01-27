@@ -3,7 +3,7 @@ from django_api.core.models import User
 
 # Create your models here.
 
-class Classe(models.Model):
+class Class(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField(("Description"))
     progam_date = models.DateField(("Programmed date"), auto_now=False, auto_now_add=False)
@@ -21,7 +21,7 @@ class Classe(models.Model):
     created_at = models.DateTimeField(("Criado em"), auto_now_add=True)
     updated_at = models.DateTimeField(("Atualizado em"), auto_now=True)
     
-    REQUIRED_FIELDS = ['name', 'description', 'progam_date', 'teacher', 'student']
+    REQUIRED_FIELDS = ['title', 'description', 'progam_date', 'teacher', 'student']
 
     def __str__(self):
       return str(self.name)
