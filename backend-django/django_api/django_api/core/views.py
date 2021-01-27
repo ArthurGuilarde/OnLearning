@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework import exceptions
 from rest_framework.decorators import api_view, permission_classes
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.permissions import AllowAny
 
 from .models import User
@@ -14,6 +15,7 @@ from .utils import GenerateAccessToken, GenerateRefreshToken, CheckRefreshToken
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@ensure_csrf_cookie
 def Login(request):
   username = request.data.get('login')
   password = request.data.get('password')
