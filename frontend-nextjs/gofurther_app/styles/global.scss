@@ -1,0 +1,32 @@
+body {
+  background-image: linear-gradient(
+    to bottom,
+    #100812,
+    #151019,
+    #18161f,
+    #1c1c25,
+    #1f212b,
+    #272732,
+    #2f2d39,
+    #373340,
+    #463b48,
+    #56444f,
+    #654e54,
+    #725859
+  );
+  overflow-y: hidden; /* Hide vertical scrollbar */
+}
+#h-main-s {
+  margin-bottom: 2%;
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // text-align: center;
+}
