@@ -19,18 +19,16 @@ const uuid = use('uuid')
 
 class UserTypeSeeder {
   async run () {
-    await UserType.create({
+    await UserType.createMany([
+      {
       id:uuid.v4(),
       type:'Student'
-    })
-
-    await UserType.create({
-      id:uuid.v4(),
-      type:'Teacher'
-    })
-
-    const table = await Database.table('user_types')
-    console.log(table)
+      },
+      {
+        id:uuid.v4(),
+        type:'Teacher'
+      }
+    ])
   }
 }
 
