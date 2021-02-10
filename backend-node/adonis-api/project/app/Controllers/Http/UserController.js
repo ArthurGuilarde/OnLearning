@@ -1,5 +1,9 @@
 'use strict'
 
+const uuid = use('uuid')
+const User = use('App/Models/User')
+const UserType = use('App/Models/UserType')
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -30,6 +34,35 @@ class UserController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    const data = request.only([
+      'email',
+      'password',
+      'name',
+      'last_name',
+      'type'
+    ])
+
+    const userExists = await User.findBy('email', data.email)
+
+    if (userExists) {
+      return response.status(401)
+      .send({'error': 'User already exists.'})
+    }
+
+    const userType = await UserType.findBy('type', data.type)
+
+    if (!userType) {
+      return response.status(401)
+      .send({'error': 'UserType not found.'})
+    }
+
+    delete data.type
+    data.id = uuid.v4()
+    data.type_id = userType.id
+
+    const user = await User.create(data)
+
+    return response.status(200).send(user)
   }
 
   /**

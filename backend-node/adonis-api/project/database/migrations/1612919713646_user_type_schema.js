@@ -7,7 +7,7 @@ class UserTypeSchema extends Schema {
   up () {
     this.create('user_types', (table) => {
       table.string('id').primary().notNullable().unique()
-      table.string('type').notNullable()
+      table.string('type').notNullable().unique()
       table.timestamps()
     })
   }
