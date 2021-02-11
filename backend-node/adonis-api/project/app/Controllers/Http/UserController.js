@@ -3,6 +3,7 @@
 const uuid = use('uuid')
 const User = use('App/Models/User')
 const UserType = use('App/Models/UserType')
+const Instructor = use('App/Models/Instructor')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -61,6 +62,13 @@ class UserController {
     data.type_id = userType.id
 
     const user = await User.create(data)
+
+    if (data.type = 'Teacher') {
+      await Instructor.create({
+        id: uuid.v4(),
+        user_id: data.id
+      })
+    }
 
     return response.status(200).send(user)
   }
