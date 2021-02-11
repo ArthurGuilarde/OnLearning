@@ -20,11 +20,11 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
-Route.get('/login', 'SessionController.index')
-Route.get('/products', 'ProductController.index')
-Route.get('/status', 'StatusController.index')
-Route.get('/uTypes', 'UserTypeController.index')
-Route.post('/users', 'UserController.store')
+Route.get('/login', 'SessionController.create').as('login.create')
+Route.get('/products', 'ProductController.index').as('products.index')
+Route.get('/status', 'StatusController.index').as('status.index')
+Route.get('/uTypes', 'UserTypeController.index').as('uTypes.index')
+Route.post('/users', 'UserController.store').as('users.store')
 
 Route.group(() => {
   Route.resource('instructors', 'InstructorController').apiOnly()
