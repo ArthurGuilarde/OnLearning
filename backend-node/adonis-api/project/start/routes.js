@@ -21,15 +21,14 @@ Route.get('/', () => {
 })
 
 Route.get('/login', 'SessionController.index')
+Route.get('/products', 'ProductController.index')
+Route.get('/status', 'StatusController.index')
+Route.get('/uTypes', 'UserTypeController.index')
 Route.post('/users', 'UserController.store')
 
 Route.group(() => {
-  Route.resource('products', 'ProductController').apiOnly()
   Route.resource('instructors', 'InstructorController').apiOnly()
-  Route.resource('schedules', 'ScheduleController').apiOnly()
-  Route.resource('status', 'StatusController').apiOnly()
-  Route.resource('subjects', 'SubjectController').apiOnly()
   Route.resource('users', 'UserController').apiOnly().except('store')
-  Route.resource('uTypes', 'UserTypeController').apiOnly()
-  Route.resource('products', 'ProductController').apiOnly()
+  Route.resource('schedules', 'ScheduleController').apiOnly()
+  Route.resource('subjects', 'SubjectController').apiOnly()
 }).middleware('auth')
