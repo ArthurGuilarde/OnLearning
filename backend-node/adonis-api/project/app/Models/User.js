@@ -16,6 +16,10 @@ class User extends Model {
     return false
   }
 
+  relationWithType () {
+    return this.belongsTo('App/Models/UserType', 'type_id', 'id');
+  }
+
   static boot () {
     super.boot()
 

@@ -1,5 +1,6 @@
 'use strict'
 
+const User = use('App/Models/User')
 
 class SessionController {
   async create ({ request, response, auth }) {
@@ -7,7 +8,9 @@ class SessionController {
 
     const token = await auth.attempt(data.login, data.password)
 
-    response.send(token)
+    const user = await User.query().with('relationWithType').where('email', data.login).fetch()
+
+    response.send({'auth': token, 'user': user})
   }
 }
 

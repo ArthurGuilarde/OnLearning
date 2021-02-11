@@ -7,6 +7,9 @@ class Status extends Model {
   static get incrementing () {
     return false
   }
+  static get table () {
+    return 'status'
+  }
 
 }
 
