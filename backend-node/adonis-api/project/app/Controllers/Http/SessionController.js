@@ -10,6 +10,11 @@ class SessionController {
 
     const user = await User.query().with('relationWithType').where('email', data.login).fetch()
 
+    if (!user.is_active) {
+      return response.status(401)
+      .send({'error': 'User is deactivated.'})
+    }
+
     response.send({'auth': token, 'user': user})
   }
 }
