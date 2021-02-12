@@ -64,6 +64,8 @@ class UserController {
     const user = await User.create(data)
 
     if (data.type = 'Teacher') {
+      user.is_active = false
+      await user.save()
       await Instructor.create({
         id: uuid.v4(),
         user_id: data.id
