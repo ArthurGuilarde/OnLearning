@@ -15,17 +15,14 @@
 const Factory = use('Factory')
 const Database = use('Database')
 const UserType = use('App/Models/UserType')
-const uuid = use('uuid')
 
 class UserTypeSeeder {
   async run () {
     await UserType.createMany([
       {
-      id:uuid.v4(),
       type:'Student'
       },
       {
-        id:uuid.v4(),
         type:'Teacher'
       }
     ])

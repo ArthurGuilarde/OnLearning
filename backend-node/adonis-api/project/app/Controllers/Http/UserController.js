@@ -1,6 +1,5 @@
 'use strict'
 
-const uuid = use('uuid')
 const User = use('App/Models/User')
 const UserType = use('App/Models/UserType')
 const Instructor = use('App/Models/Instructor')
@@ -58,17 +57,17 @@ class UserController {
     }
 
     delete data.type
-    data.id = uuid.v4()
     data.type_id = userType.id
 
     const user = await User.create(data)
 
     if (data.type = 'Teacher') {
       user.is_active = false
+
       await user.save()
+
       await Instructor.create({
-        id: uuid.v4(),
-        user_id: data.id
+        user_id: user.id
       })
     }
 

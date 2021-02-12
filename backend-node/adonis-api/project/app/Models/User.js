@@ -6,6 +6,8 @@ const Model = use('Model')
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
 
+const uuid = use('uuid')
+
 class User extends Model {
 
   static get hidden () {
@@ -32,6 +34,9 @@ class User extends Model {
         userInstance.password = await Hash.make(userInstance.password)
       }
     })
+
+    this.addHook('beforeCreate', 'GeneratorIdHook.generate')
+
   }
 
   /**

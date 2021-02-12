@@ -8,6 +8,11 @@ class UserType extends Model {
     return false
   }
 
+  static boot () {
+    super.boot()
+
+    this.addHook('beforeCreate', 'GeneratorIdHook.generate')
+  }
 }
 
 module.exports = UserType

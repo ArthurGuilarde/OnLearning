@@ -27,7 +27,7 @@ Route.get('/uTypes', 'UserTypeController.index').as('uTypes.index')
 Route.post('/users', 'UserController.store').as('users.store')
 
 Route.group(() => {
-  Route.resource('instructors', 'InstructorController').apiOnly()
+  Route.resource('instructors', 'InstructorController').apiOnly().except('store')
   Route.resource('users', 'UserController').apiOnly().except('store')
   Route.resource('schedules', 'ScheduleController').apiOnly()
   Route.resource('subjects', 'SubjectController').apiOnly()

@@ -8,6 +8,11 @@ class Schedule extends Model {
     return false
   }
 
+  static boot () {
+    super.boot()
+
+    this.addHook('beforeCreate', 'GeneratorIdHook.generate')
+  }
 }
 
 module.exports = Schedule

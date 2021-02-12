@@ -7,7 +7,11 @@ class Instructor extends Model {
   static get incrementing () {
     return false
   }
+  static boot () {
+    super.boot()
 
+    this.addHook('beforeCreate', 'GeneratorIdHook.generate')
+  }
 }
 
 module.exports = Instructor
