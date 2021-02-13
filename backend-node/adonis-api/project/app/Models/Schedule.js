@@ -8,6 +8,10 @@ class Schedule extends Model {
     return false
   }
 
+  static get dates () {
+    return super.dates.concat(['date'])
+  }
+
   static boot () {
     super.boot()
 
