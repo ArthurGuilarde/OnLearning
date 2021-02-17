@@ -7,6 +7,11 @@ class Instructor extends Model {
   static get incrementing () {
     return false
   }
+
+  Instructor() {
+    return this.belongsTo('App/Models/User', 'user_id', 'id');
+  }
+
   static boot () {
     super.boot()
 

@@ -12,6 +12,18 @@ class Schedule extends Model {
     return super.dates.concat(['date'])
   }
 
+  User() {
+    return this.belongsTo('App/Models/User', 'user_id', 'id');
+  }
+
+  Instructor() {
+    return this.belongsTo('App/Models/IntructorSubject', 'instructor_id', 'instructor_id').with('Instructor');
+  }
+
+  Status() {
+    return this.belongsTo('App/Models/Status', 'status_id', 'id');
+  }
+
   static boot () {
     super.boot()
 

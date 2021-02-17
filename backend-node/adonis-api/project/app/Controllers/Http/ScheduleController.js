@@ -95,6 +95,13 @@ class ScheduleController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const shedules = await Schedule.query()
+    .with('User')
+    .with('Instructor')
+    .with('Status')
+    .where('user_id', params.id)
+    .fetch()
+    return response.status(200).send(shedules)
   }
 
   /**
