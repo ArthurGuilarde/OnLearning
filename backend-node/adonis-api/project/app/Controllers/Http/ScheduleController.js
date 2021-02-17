@@ -65,10 +65,16 @@ class ScheduleController {
       .send({'error': "Invalid Date."})
     }
 
-    const findAppointmentSameDate = await Schedule.findBy('date', appointmentDate, 'instructor_id', data.instructor_id )
+    const findAppointmentSameDate = await Schedule.query()
+    .where({
+      'date': format(appointmentDate, 'yyyy-MM-dd HH:mm:ss'),
+      'instructor_id': data.instructor_id
+    }).fetch()
 
 
-    if (findAppointmentSameDate) {
+    console.log(findAppointmentSameDate.toJSON()[0]);
+
+    if (findAppointmentSameDate.toJSON()[0]) {
       return response.status(401)
       .send({'error': "This appointment is aredy booked."})
     }
@@ -94,7 +100,11 @@ class ScheduleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show ({ params, request, response, view, auth}) {
+    if (auth.jwtPayload.uid !== params.id){
+      return response.status(401).send({'error': 'Unauthorized access'})
+    }
+
     const shedules = await Schedule.query()
     .with('User')
     .with('Instructor')
