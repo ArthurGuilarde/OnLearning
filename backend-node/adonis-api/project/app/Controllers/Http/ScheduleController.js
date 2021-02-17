@@ -58,7 +58,7 @@ class ScheduleController {
 
     if (
       isBefore(appointmentDate, sever) ||
-       appointmentDate.getHours() > 18 ||
+       appointmentDate.getHours() >= 18 ||
        appointmentDate.getHours() < 8
     ) {
       return response.status(401)
@@ -71,8 +71,6 @@ class ScheduleController {
       'instructor_id': data.instructor_id
     }).fetch()
 
-
-    console.log(findAppointmentSameDate.toJSON()[0]);
 
     if (findAppointmentSameDate.toJSON()[0]) {
       return response.status(401)
