@@ -3,7 +3,7 @@
 const Schedule = use('App/Models/Schedule')
 const User = use('App/Models/User')
 const Instructor = use('App/Models/Instructor')
-const { startOfHour, isBefore, format } = use('date-fns')
+const { startOfHour, isBefore, format, getHours, isAfter } = use('date-fns')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -89,6 +89,60 @@ class ScheduleController {
 
     return response.status(200).send(appointment)
   }
+
+    /**
+   * Create/save a new schedule.
+   * POST schedules
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   */
+  async dayCheck ({ request, response }) {
+    const data = request.only(['date', 'instructor_id'])
+    const date = new Date(data.date)
+
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
+
+    const temp = new Date(year, month, day, 23, 0, 0)
+
+    const teste = await Schedule.query()
+    .whereBetween('date', [format(date, 'yyyy-MM-dd HH:mm:ss'), format(temp, 'yyyy-MM-dd HH:mm:ss')])
+    .where({
+      'instructor_id':data.instructor_id
+    })
+    .fetch()
+
+    const appointments = teste.toJSON()
+
+    const hourStart = 8
+    const numberOfHoursInDay = 10
+
+    const eachHourArray = Array.from(
+      {
+        length: numberOfHoursInDay
+      },
+      (value, index) => index + hourStart
+    )
+
+
+    const availability = eachHourArray.map((hour) => {
+      const appointmentsInHour = appointments.find((appointment) => {
+        return getHours(new Date(appointment.date)) === hour
+      })
+      const currentDate = new Date()
+      const compareDate = new Date(year, month, day, hour)
+      return {
+        hour,
+        available: !appointmentsInHour && isAfter(compareDate, currentDate)
+      }
+    })
+
+    return response.status(200).send(availability)
+  }
+
 
 
   /**

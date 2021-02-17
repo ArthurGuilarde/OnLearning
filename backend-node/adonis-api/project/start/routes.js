@@ -25,4 +25,5 @@ Route.group(() => {
   Route.resource('users', 'UserController').apiOnly().except('store')
   Route.resource('schedules', 'ScheduleController').apiOnly()
   Route.resource('subjects', 'SubjectController').apiOnly()
+  Route.post('schedules/day', 'ScheduleController.dayCheck').as('schedules.dayCheck')
 }).middleware('auth')
