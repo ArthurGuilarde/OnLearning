@@ -17,8 +17,18 @@ class Schedule extends Model {
   }
 
   Instructor() {
-    return this.belongsTo('App/Models/IntructorSubject', 'instructor_id', 'instructor_id').with('Instructor');
+    return this.manyThrough(
+      'App/Models/Instructor',
+      'User',
+      'instructor_id',
+      'id'
+    )
   }
+
+  Subject() {
+    return this.hasMany('App/Models/InstructorSubject', 'instructor_id', 'instructor_id').with('Subject');
+  }
+
 
   Status() {
     return this.belongsTo('App/Models/Status', 'status_id', 'id');

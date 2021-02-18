@@ -15,7 +15,7 @@ const Factory = use('Factory')
 const User = use('App/Models/User')
 const UserType = use('App/Models/UserType')
 const Instructor = use('App/Models/Instructor')
-const IntructorSubject = use('App/Models/IntructorSubject')
+const InstructorSubject = use('App/Models/InstructorSubject')
 const Subject = use('App/Models/Subject')
 
 class InstructorSeeder {
@@ -63,7 +63,7 @@ class InstructorSeeder {
         user_id: user.toJSON().id
       })
 
-      await IntructorSubject.create({
+      await InstructorSubject.create({
         instructor_id: instructor.id,
         subject_id: subjectArray[randomIntFromInterval(0,4)].id
       })

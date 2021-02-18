@@ -161,6 +161,7 @@ class ScheduleController {
     .with('User')
     .with('Instructor')
     .with('Status')
+    .with('Subject')
     .where('user_id', params.id)
     .fetch()
     return response.status(200).send(shedules)

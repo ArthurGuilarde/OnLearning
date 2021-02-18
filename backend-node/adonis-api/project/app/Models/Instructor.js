@@ -8,7 +8,7 @@ class Instructor extends Model {
     return false
   }
 
-  Instructor() {
+  User() {
     return this.belongsTo('App/Models/User', 'user_id', 'id');
   }
 

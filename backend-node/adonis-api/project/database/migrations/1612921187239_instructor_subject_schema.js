@@ -3,9 +3,9 @@
 /** @type {import('@adonisjs/lucid/src/Schema')} */
 const Schema = use('Schema')
 
-class IntructorSubjectSchema extends Schema {
+class InstructorSubjectSchema extends Schema {
   up () {
-    this.create('intructor_subjects', (table) => {
+    this.create('instructor_subjects', (table) => {
       table.string('subject_id').notNullable().references('id').inTable('subjects')
       table.string('instructor_id').notNullable().references('id').inTable('instructors')
       table.primary(['subject_id','instructor_id'])
@@ -14,8 +14,8 @@ class IntructorSubjectSchema extends Schema {
   }
 
   down () {
-    this.drop('intructor_subjects')
+    this.drop('instructor_subjects')
   }
 }
 
-module.exports = IntructorSubjectSchema
+module.exports = InstructorSubjectSchema
