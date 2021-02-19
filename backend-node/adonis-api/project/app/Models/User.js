@@ -27,7 +27,9 @@ class User extends Model {
   }
 
   getUrl () {
-    return `${Env.get('APP_URL')}/avatar/image/${this.avatar_url}`
+    if (this.avatar_url){
+      return `${Env.get('APP_URL')}/avatar/image/${this.avatar_url}`
+    }
   }
 
   static boot () {
