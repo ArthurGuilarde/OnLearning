@@ -5,7 +5,7 @@ const Model = use('Model')
 
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
-
+const Env = use('Env')
 const uuid = use('uuid')
 
 class User extends Model {
@@ -20,6 +20,14 @@ class User extends Model {
 
   relationWithType () {
     return this.belongsTo('App/Models/UserType', 'type_id', 'id');
+  }
+
+  static get computed () {
+    return ['url']
+  }
+
+  getUrl () {
+    return `${Env.get('APP_URL')}/avatar/image/${this.avatar_url}`
   }
 
   static boot () {

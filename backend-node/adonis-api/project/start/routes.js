@@ -26,4 +26,6 @@ Route.group(() => {
   Route.resource('schedules', 'ScheduleController').apiOnly()
   Route.resource('subjects', 'SubjectController').apiOnly()
   Route.post('schedules/day', 'ScheduleController.dayCheck').as('schedules.dayCheck')
+  Route.get('/avatar/:id', 'AvatarUploadController.store').as('AvatarUpload.store')
+  Route.get('/avatar/image/:path', 'AvatarUploadController.show').as('AvatarUpload.show')
 }).middleware('auth')
