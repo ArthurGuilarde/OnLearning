@@ -1,9 +1,10 @@
 'use strict'
 
+const { startOfHour, isBefore, format, getHours, isAfter } = use('date-fns')
 const Schedule = use('App/Models/Schedule')
 const User = use('App/Models/User')
+const UserType = use('App/Models/UserType')
 const Instructor = use('App/Models/Instructor')
-const { startOfHour, isBefore, format, getHours, isAfter } = use('date-fns')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -153,8 +154,22 @@ class ScheduleController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view, auth}) {
+
     if (auth.jwtPayload.uid !== params.id){
       return response.status(401).send({'error': 'Unauthorized access'})
+    }
+
+    const user = await User.find(params.id)
+    const teacherType = await UserType.findBy('type', 'Teacher')
+
+    if(user.type_id === teacherType.id){
+      const instructor = await Instructor.findBy('user_id', params.id)
+      const shedules = await Schedule.query()
+      .with('User')
+      .with('Status')
+      .where('instructor_id', instructor.id)
+      .fetch()
+      return response.status(200).send(shedules)
     }
 
     const shedules = await Schedule.query()
