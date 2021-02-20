@@ -61,7 +61,7 @@ class UserController {
 
     const user = await User.create(data)
 
-    if (data.type === 'Teacher') {
+    if (userType.type === 'Teacher') {
       user.is_active = false
 
       await user.save()

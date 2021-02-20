@@ -1,4 +1,5 @@
 'use strict'
+const Instructor = use('App/Models/Instructor')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -18,6 +19,7 @@ class InstructorController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    return response.status(200).send(await Instructor.query().with('User').fetch())
   }
 
   /**
