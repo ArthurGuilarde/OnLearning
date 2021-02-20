@@ -12,6 +12,15 @@ class Instructor extends Model {
     return this.belongsTo('App/Models/User', 'user_id', 'id');
   }
 
+  Subject() {
+    return this.manyThrough(
+      'App/Models/InstructorSubject',
+      'Subject',
+      'id',
+      'instructor_id',
+    )
+  }
+
   static boot () {
     super.boot()
 

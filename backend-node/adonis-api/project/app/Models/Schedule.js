@@ -26,7 +26,12 @@ class Schedule extends Model {
   }
 
   Subject() {
-    return this.hasMany('App/Models/InstructorSubject', 'instructor_id', 'instructor_id').with('Subject');
+    return this.manyThrough(
+      'App/Models/InstructorSubject',
+      'Subject',
+      'instructor_id',
+      'instructor_id',
+    )
   }
 
 

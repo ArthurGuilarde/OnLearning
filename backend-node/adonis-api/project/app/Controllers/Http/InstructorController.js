@@ -19,7 +19,7 @@ class InstructorController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    return response.status(200).send(await Instructor.query().with('User').fetch())
+    return response.status(200).send(await Instructor.query().with('User').with('Subject').fetch())
   }
 
   /**
