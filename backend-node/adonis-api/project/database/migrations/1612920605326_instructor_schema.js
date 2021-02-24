@@ -7,6 +7,7 @@ class InstructorSchema extends Schema {
   up () {
     this.create('instructors', (table) => {
       table.string('id').primary().notNullable().unique()
+      table.string('link').notNullable()
       table.string('user_id').notNullable().references('id').inTable('users')
       table.timestamps()
     })

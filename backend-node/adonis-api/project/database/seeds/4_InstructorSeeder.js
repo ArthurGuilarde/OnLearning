@@ -60,7 +60,8 @@ class InstructorSeeder {
     const subjectArray = subjects.toJSON()
     users.map(async (user) => {
       const instructor = await Instructor.create({
-        user_id: user.toJSON().id
+        user_id: user.toJSON().id,
+        link: 'google.com'
       })
 
       await InstructorSubject.create({
