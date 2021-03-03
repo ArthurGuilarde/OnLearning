@@ -19,6 +19,7 @@ const Route = use('Route')
 Route.post('/login', 'SessionController.create').as('login.create')
 Route.get('/products', 'ProductController.index').as('products.index')
 Route.post('/users', 'UserController.store').as('users.store')
+Route.get('/avatar/image/:path', 'AvatarUploadController.show').as('AvatarUpload.show')
 
 Route.group(() => {
   Route.resource('instructors', 'InstructorController').apiOnly().except('store')
@@ -27,5 +28,4 @@ Route.group(() => {
   Route.resource('subjects', 'SubjectController').apiOnly()
   Route.post('schedules/day', 'ScheduleController.dayCheck').as('schedules.dayCheck')
   Route.get('/avatar/:id', 'AvatarUploadController.store').as('AvatarUpload.store')
-  Route.get('/avatar/image/:path', 'AvatarUploadController.show').as('AvatarUpload.show')
 }).middleware('auth')
