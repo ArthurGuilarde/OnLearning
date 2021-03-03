@@ -1,10 +1,11 @@
 'use strict'
 
-const { startOfHour, isBefore, format, getHours, isAfter } = use('date-fns')
+const { startOfHour, isBefore, format, getHours, isAfter, endOfHour, startOfDay, endOfDay} = use('date-fns')
 const Schedule = use('App/Models/Schedule')
 const User = use('App/Models/User')
 const UserType = use('App/Models/UserType')
 const Instructor = use('App/Models/Instructor')
+const Status = use('App/Models/Status')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -36,11 +37,22 @@ class ScheduleController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
-    const data = request.only(['date', 'status_id', 'user_id', 'instructor_id'])
+    const data = request.only(['date', 'user_id', 'instructor_id'])
     const student = await User.find(data.user_id)
-    const teacher = await Instructor.find(data.instructor_id)
+    const teacher = await Instructor.findBy('user_id', data.instructor_id)
 
-    const date = new Date(data.date)
+    const temp = new Date(data.date)
+
+    const day = temp.getDate()
+    const month = temp.getMonth()
+    const year = temp.getFullYear()
+    const hour = temp.getHours() - 1
+
+
+    const date = new Date(year, month, day, hour,0,0)
+
+
+    const status = await Status.findBy('name', 'Pendente')
 
     if (!student || !teacher) {
       return response.status(401)
@@ -69,7 +81,7 @@ class ScheduleController {
     const findAppointmentSameDate = await Schedule.query()
     .where({
       'date': format(appointmentDate, 'yyyy-MM-dd HH:mm:ss'),
-      'instructor_id': data.instructor_id
+      'instructor_id': teacher.toJSON().id
     }).fetch()
 
 
@@ -78,7 +90,11 @@ class ScheduleController {
       .send({'error': "This appointment is aredy booked."})
     }
 
-    const appointment = await Schedule.create({...data, date: appointmentDate})
+    const appointment = await Schedule.create({...data,
+      date: appointmentDate,
+      status_id: status.toJSON().id,
+      instructor_id: teacher.toJSON().id
+    })
 
 
     // const updateCoinsService = new UpdateCoinsService(this.usersRepository)
@@ -99,18 +115,23 @@ class ScheduleController {
    */
   async dayCheck ({ request, response }) {
     const data = request.only(['date', 'instructor_id'])
-    const date = new Date(data.date)
+    const teacher = await Instructor.findBy('user_id', data.instructor_id)
+
+    const temp = new Date(data.date)
+    const date = startOfDay(temp)
 
     const day = date.getDate()
     const month = date.getMonth()
     const year = date.getFullYear()
 
-    const temp = new Date(year, month, day, 23, 0, 0)
+
+    const finalDate = new Date(year, month, day, 23,0,0)
+
 
     const teste = await Schedule.query()
-    .whereBetween('date', [format(date, 'yyyy-MM-dd HH:mm:ss'), format(temp, 'yyyy-MM-dd HH:mm:ss')])
+    .whereBetween('date', [format(date, 'yyyy-MM-dd HH:mm:ss'), format(finalDate, 'yyyy-MM-dd HH:mm:ss')])
     .where({
-      'instructor_id':data.instructor_id
+      'instructor_id':teacher.toJSON().id
     })
     .fetch()
 
