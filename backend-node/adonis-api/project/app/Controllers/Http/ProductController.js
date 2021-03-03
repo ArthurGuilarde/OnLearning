@@ -4,6 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Product = use('App/Models/Product')
+
 /**
  * Resourceful controller for interacting with products
  */
@@ -18,6 +20,7 @@ class ProductController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    return response.status(200).send(await Product.query().fetch())
   }
 
   /**
