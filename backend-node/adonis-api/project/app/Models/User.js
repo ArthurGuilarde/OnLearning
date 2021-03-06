@@ -6,7 +6,6 @@ const Model = use('Model')
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
 const Env = use('Env')
-const uuid = use('uuid')
 
 class User extends Model {
 

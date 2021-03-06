@@ -11,6 +11,7 @@ class ProductSchema extends Schema {
       table.string('description').notNullable().unique()
       table.integer('price').unsigned().notNullable()
       table.integer('credits').unsigned().notNullable()
+      table.string('avatar_url').defaultTo('coins.png')
       table.timestamps()
     })
   }
@@ -21,3 +22,4 @@ class ProductSchema extends Schema {
 }
 
 module.exports = ProductSchema
+
