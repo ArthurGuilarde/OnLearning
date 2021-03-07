@@ -222,7 +222,15 @@ class ScheduleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response, auth }) {
+    const schedule_serialized = await Schedule.find(params.id)
+    const schedule = schedule_serialized.toJSON()
+
+    if (auth.jwtPayload.uid !== schedule.user_id){
+      return response.status(401).send({'error': 'Unauthorized access'})
+    }
+    await schedule_serialized.delete()
+    return response.status(200).send({'succes': 'Schedule removed'})
   }
 }
 
